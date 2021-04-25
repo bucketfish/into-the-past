@@ -1,0 +1,123 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://collision.tscn" type="PackedScene" id=2]
+[ext_resource path="res://object.tscn" type="PackedScene" id=3]
+[ext_resource path="res://telephone.gd" type="Script" id=4]
+[ext_resource path="res://Assets/telephone_top.png" type="Texture" id=5]
+[ext_resource path="res://dialogue.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Backgrounds/1.jpg" type="Texture" id=7]
+[ext_resource path="res://ring.wav" type="AudioStream" id=8]
+[ext_resource path="res://card.png" type="Texture" id=9]
+[ext_resource path="res://Assets/telepehone_bottom.png" type="Texture" id=10]
+[ext_resource path="res://final.gd" type="Script" id=11]
+
+[sub_resource type="Animation" id=2]
+resource_name = "ring"
+length = 0.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite2:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ -10.8, 0.0, 10.8, 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -4.13403, -13.9921 ), Vector2( -0.635986, -13.6741 ), Vector2( 2.54401, -14.3101 ), Vector2( -0.635986, -13.6741 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "still"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite2:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0.197144, -13.9921 ) ]
+}
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 11 )
+
+[node name="TileMap" parent="." instance=ExtResource( 2 )]
+
+[node name="1" type="Sprite" parent="."]
+position = Vector2( 508.002, 310.436 )
+scale = Vector2( 0.9, 0.9 )
+texture = ExtResource( 7 )
+
+[node name="card2" type="Sprite" parent="."]
+position = Vector2( 645.419, 304.783 )
+rotation = 0.520108
+scale = Vector2( 0.0627641, 0.0627641 )
+texture = ExtResource( 9 )
+
+[node name="thing2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 750.71, 137.229 )
+script = ExtResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="thing2"]
+position = Vector2( -1.27203, -10.494 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 10 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite2" type="Sprite" parent="thing2"]
+position = Vector2( -4.13403, -13.9921 )
+rotation = -0.188496
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="thing2"]
+anims/ring = SubResource( 2 )
+anims/still = SubResource( 3 )
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="thing2"]
+stream = ExtResource( 8 )
+volume_db = 10.0
+autoplay = true
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 476.879, 312.567 )
+scale = Vector2( 6, 6 )
+
+[node name="dialogue" parent="." instance=ExtResource( 6 )]
+position = Vector2( 500, 450 )
+[connection signal="input_event" from="thing2" to="thing2" method="_on_Area2D_input_event"]
+[connection signal="interact" from="thing2" to="dialogue" method="_on_thing_interact"]
+[connection signal="finished" from="thing2/AudioStreamPlayer2D" to="thing2" method="_on_AudioStreamPlayer2D_finished"]
+[connection signal="back" from="dialogue" to="Player" method="_on_dialogue_back"]

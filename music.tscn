@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Audio/1.wav" type="AudioStream" id=1]
+[ext_resource path="res://music.gd" type="Script" id=2]
+[ext_resource path="res://Audio/2.wav" type="AudioStream" id=3]
+[ext_resource path="res://Audio/4.wav" type="AudioStream" id=4]
+[ext_resource path="res://Audio/3.wav" type="AudioStream" id=5]
+
+[node name="music" type="Node"]
+script = ExtResource( 2 )
+
+[node name="room1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+
+[node name="room2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="room3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+
+[node name="room4" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+[connection signal="finished" from="room1" to="." method="_on_finished"]
+[connection signal="finished" from="room2" to="." method="_on_finished"]
+[connection signal="finished" from="room3" to="." method="_on_finished"]
+[connection signal="finished" from="room4" to="." method="_on_finished"]

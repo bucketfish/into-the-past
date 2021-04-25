@@ -1,0 +1,79 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://collision.tscn" type="PackedScene" id=2]
+[ext_resource path="res://object.tscn" type="PackedScene" id=3]
+[ext_resource path="res://table.gd" type="Script" id=4]
+[ext_resource path="res://cardshow.gd" type="Script" id=5]
+[ext_resource path="res://dialogue.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Backgrounds/1.jpg" type="Texture" id=7]
+[ext_resource path="res://card.gd" type="Script" id=8]
+[ext_resource path="res://card.png" type="Texture" id=9]
+[ext_resource path="res://bed.gd" type="Script" id=10]
+[ext_resource path="res://plant.gd" type="Script" id=11]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 421.981, 258.307 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="TileMap" parent="." instance=ExtResource( 2 )]
+
+[node name="1" type="Sprite" parent="."]
+position = Vector2( 508.002, 310.436 )
+scale = Vector2( 0.9, 0.9 )
+texture = ExtResource( 7 )
+
+[node name="thing" parent="." instance=ExtResource( 3 )]
+script = ExtResource( 5 )
+
+[node name="card" type="Sprite" parent="thing"]
+position = Vector2( -2.21777, 1.06836 )
+rotation = 0.520108
+scale = Vector2( 0.0627641, 0.0627641 )
+texture = ExtResource( 9 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 476.879, 312.567 )
+scale = Vector2( 6, 6 )
+
+[node name="card" type="Sprite" parent="."]
+visible = false
+position = Vector2( 498.134, 313.61 )
+scale = Vector2( 0.64938, 0.64938 )
+texture = ExtResource( 9 )
+script = ExtResource( 8 )
+
+[node name="Area2D" type="Area2D" parent="card"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="card/Area2D"]
+shape = SubResource( 1 )
+
+[node name="table" parent="." instance=ExtResource( 3 )]
+position = Vector2( 141.793, 510.926 )
+script = ExtResource( 4 )
+
+[node name="bed" parent="." instance=ExtResource( 3 )]
+position = Vector2( 222.718, 179.968 )
+script = ExtResource( 10 )
+
+[node name="plant" parent="." instance=ExtResource( 3 )]
+position = Vector2( 528.965, 71.0391 )
+script = ExtResource( 11 )
+
+[node name="dialogue" parent="." instance=ExtResource( 6 )]
+visible = false
+position = Vector2( 500, 450 )
+[connection signal="card_show" from="thing" to="card" method="_on_thing_card_show"]
+[connection signal="input_event" from="thing" to="thing" method="_on_Area2D_input_event"]
+[connection signal="interact" from="thing" to="dialogue" method="_on_thing_interact"]
+[connection signal="interact" from="card" to="dialogue" method="_on_thing_interact"]
+[connection signal="input_event" from="card/Area2D" to="card" method="_on_Area2D_input_event"]
+[connection signal="input_event" from="table" to="table" method="_on_Area2D_input_event"]
+[connection signal="interact" from="table" to="dialogue" method="_on_thing_interact"]
+[connection signal="input_event" from="bed" to="bed" method="_on_bed_input_event"]
+[connection signal="interact" from="bed" to="dialogue" method="_on_thing_interact"]
+[connection signal="input_event" from="plant" to="plant" method="_on_plant_input_event"]
+[connection signal="interact" from="plant" to="dialogue" method="_on_thing_interact"]
+[connection signal="back" from="dialogue" to="card" method="_on_dialogue_back"]
+[connection signal="back" from="dialogue" to="Player" method="_on_dialogue_back"]
